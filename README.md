@@ -6,14 +6,15 @@
 * Tested on: Intel(R) i7-14700HX, 2100 Mhz, RTX 5060 Laptop
 ![WebGPU](img/cover.gif)
 
-## Overview 
-### Live Demo
+## Overview  
+### Comparison  
 
-[![](img/thumb.png)](http://TODO.github.io/Project4-WebGPU-Forward-Plus-and-Clustered-Deferred)
-
-### Demo Video/GIF
-
-[![](img/video.mp4)](TODO)
+| Objects | Naive Shading | Forward+ Shading | Clustered Deferred Shading |
+|:--------:|:--------------:|:----------------:|:---------------------------:|
+| **100**  | ![Naive 100](img/naive100.gif) | ![Forward 100](img/forward100.gif) | ![Deferred 100](img/deferred100.gif) |
+| **1000** | ![Naive 1000](img/naive1000.gif) | ![Forward 1000](img/forward1000.gif) | ![Deferred 1000](img/deferred1000.gif) |
+| **2500** | ![Naive 2500](img/naive2500.gif) | ![Forward 2500](img/forward2500.gif) | ![Deferred 2500](img/deferred2500.gif) |
+| **5000** | ![Naive 5000](img/naive5000.gif) | ![Forward 5000](img/forward5000.gif) | ![Deferred 5000](img/deferred5000.gif) |
 
 ### (TODO: Your README)
 
