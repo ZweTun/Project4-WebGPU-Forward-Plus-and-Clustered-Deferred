@@ -41,6 +41,8 @@ The rendered scene is the **Sponza Atrium** model, illuminated by a large number
 
 
 ### Performance Analysis  
+![WebGPU](img/renderPerf.png)
+As we can see naive performs okay for small light counts but scales poorly. It's performance drops sharply as lights exceed a few hundred. Forward+ Shading provides a better performance boost by limiting light evaluations per cluster, resulting in greater frames than naive. Clustered Deferred Shading however sees the greatest improvement beating out both other implementations for all ligth numbers. 
 
 ### Credits
 
