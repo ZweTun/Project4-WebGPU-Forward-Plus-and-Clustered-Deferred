@@ -182,6 +182,17 @@ export class Node {
                 usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
             });
 
+            // Validate transform values to avoid uploading NaN/Inf matrices
+            let valid = true;
+            for (let i = 0; i < 16; ++i) {
+                const v = (this.transform as Float32Array)[i];
+                if (!Number.isFinite(v)) { valid = false; break; }
+            }
+            if (!valid) {
+                console.warn(`Node '${this.name}' has invalid transform; replacing with identity to avoid NaNs.`);
+                this.transform = mat4.identity();
+            }
+
             device.queue.writeBuffer(this.modelMatUniformBuffer, 0, this.transform);
 
             this.modelBindGroup = device.createBindGroup({

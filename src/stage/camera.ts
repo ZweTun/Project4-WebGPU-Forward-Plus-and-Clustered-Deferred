@@ -3,21 +3,80 @@ import { toRadians } from "../math_util";
 import { device, canvas, fovYDegrees, aspectRatio } from "../renderer";
 
 class CameraUniforms {
-    readonly buffer = new ArrayBuffer(16 * 4);
+    // 60  * 4 bytes = 240 bytes
+    readonly buffer = new ArrayBuffer(240);
     private readonly floatView = new Float32Array(this.buffer);
+    private readonly u32View = new Uint32Array(this.buffer);
 
-    set viewProjMat(mat: Float32Array) {
-        // TODO-1.1: set the first 16 elements of `this.floatView` to the input `mat`
+    // screenDim 
+    set screenDim(dim: [number, number]) {
+        this.floatView[0] = dim[0];
+        this.floatView[1] = dim[1];
+        this.floatView[2] = 0.0; // padding
+        this.floatView[3] = 0.0; // padding
     }
 
-    // TODO-2: add extra functions to set values needed for light clustering here
+    // inverseProjMat 
+    set inverseProjMat(mat: Float32Array) {
+      
+        for (let i = 0; i < 16; i++) {
+            this.floatView[4 + i] = mat[i];
+        }
+    }
+
+    // viewMat
+    set viewMat(mat: Float32Array) {
+    
+        for (let i = 0; i < 16; i++) {
+            this.floatView[20 + i] = mat[i];
+        }
+    }
+
+    // viewProjMat
+    set viewProjMat(mat: Float32Array) {
+     
+        for (let i = 0; i < 16; i++) {
+            this.floatView[36 + i] = mat[i];
+        }
+    }
+
+    // near/far/tileSize
+    set nearPlane(v: number)  { 
+        this.floatView[52] = v; 
+    }
+    set farPlane(v: number)   { 
+        this.floatView[53] = v; 
+    }
+    set tileSizePx(v: number) { 
+        this.floatView[54] = v; this.floatView[55] = 0.0; 
+    }
+
+    // workGroup 
+    set workGroup(dim: [number, number, number]) {
+        const base = 56;
+        const x = Math.max(0, Math.floor(dim[0])) ;
+        const y = Math.max(0, Math.floor(dim[1])) ;
+        const z = Math.max(0, Math.floor(dim[2])) ;
+        this.u32View[base + 0] = x;
+        this.u32View[base + 1] = y;
+        this.u32View[base + 2] = z;
+        this.u32View[base + 3] = 0; // padding
+    }
 }
+
+
 
 export class Camera {
     uniforms: CameraUniforms = new CameraUniforms();
     uniformsBuffer: GPUBuffer;
 
+
+
+    workGroup : Vec3 = vec3.create(16, 9, 24);
+    
+
     projMat: Mat4 = mat4.create();
+    // viewProjMat: Mat4 = mat4.create(); 
     cameraPos: Vec3 = vec3.create(-7, 2, 0);
     cameraFront: Vec3 = vec3.create(0, 0, -1);
     cameraUp: Vec3 = vec3.create(0, 1, 0);
@@ -26,6 +85,8 @@ export class Camera {
     pitch: number = 0;
     moveSpeed: number = 0.004;
     sensitivity: number = 0.15;
+
+
 
     static readonly nearPlane = 0.1;
     static readonly farPlane = 1000;
@@ -50,6 +111,17 @@ export class Camera {
         canvas.addEventListener('mousedown', () => canvas.requestPointerLock());
         canvas.addEventListener('mouseup', () => document.exitPointerLock());
         canvas.addEventListener('mousemove', (event) => this.onMouseMove(event));
+
+        this.uniformsBuffer = device.createBuffer({
+            size: this.uniforms.buffer.byteLength,
+            usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
+        });
+
+
+
+
+
+     
     }
 
     private onKeyEvent(event: KeyboardEvent, down: boolean) {
@@ -122,6 +194,10 @@ export class Camera {
         }
     }
 
+
+
+    
+
     onFrame(deltaTime: number) {
         this.processInput(deltaTime);
 
@@ -129,10 +205,44 @@ export class Camera {
         const viewMat = mat4.lookAt(this.cameraPos, lookPos, [0, 1, 0]);
         const viewProjMat = mat4.mul(this.projMat, viewMat);
         // TODO-1.1: set `this.uniforms.viewProjMat` to the newly calculated view proj mat
-
         // TODO-2: write to extra buffers needed for light clustering here
+        this.uniforms.viewProjMat = viewProjMat
+
+
+
+        this.uniforms.screenDim = [canvas.width, canvas.height];
+
+        // inverseProjMat 
+        this.uniforms.inverseProjMat = mat4.invert(this.projMat);
+
+        // write view matrix 
+        this.uniforms.viewMat = viewMat;
+
+        // float fields
+        this.uniforms.nearPlane = Camera.nearPlane;
+        this.uniforms.farPlane  = Camera.farPlane;
+
+        // ensure workGroup components are integers 
+        const wgX = Math.max(0, Math.floor(this.workGroup[0]));
+        const wgY = Math.max(0, Math.floor(this.workGroup[1]));
+        const wgZ = Math.max(0, Math.floor(this.workGroup[2]));
+
+        const tileSize = canvas.width / wgX;
+        this.uniforms.tileSizePx = tileSize;
+
+        // write integer workGroup 
+        this.uniforms.workGroup = [wgX, wgY, wgZ];
 
         // TODO-1.1: upload `this.uniforms.buffer` (host side) to `this.uniformsBuffer` (device side)
         // check `lights.ts` for examples of using `device.queue.writeBuffer()`
+            
+        device.queue.writeBuffer(this.uniformsBuffer, 0, this.uniforms.buffer, 0, this.uniforms.buffer.byteLength);
+
+
+
+
+
     }
+
+    
 }
