@@ -193,7 +193,7 @@ export class ClusteredDeferredRenderer extends renderer.Renderer {
                 label: "clustered deferred fullscreen pipeline layout",
                 bindGroupLayouts: [
                     this.gBufferBindGroupLayout,      // group(0) - G-buffer textures
-                    this.sceneUniformsBindGroupLayout // group(1) - Scene uniforms, lights, clusters
+                    this.sceneUniformsBindGroupLayout // group(1) - scene uniforms
                 ]
             }),
             vertex: {
