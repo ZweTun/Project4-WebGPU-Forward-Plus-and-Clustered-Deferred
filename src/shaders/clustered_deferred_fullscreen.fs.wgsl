@@ -38,7 +38,6 @@ fn main(in: FragmentInput) -> @location(0) vec4f {
     let worldPos = textureLoad(positionTexture, texCoordFlipped, 0).xyz;         // flipped sampling
     let normal = normalize(textureLoad(normalTexture, texCoordFlipped, 0).xyz);
 
-
     // Get cluster index
     let clusterIdx = getClusterIndexFromFragment(in.fragPos, worldPos);
     
