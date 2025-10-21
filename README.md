@@ -105,10 +105,10 @@ As we can see naive performs okay for small light counts at ~100 lights but scal
 ### Running the code
 Follow these steps to install and view the project:
 
-Clone this repository
-Download and install Node.js
-Run npm install in the root directory of this project to download and install dependencies
-Run npm run dev, which will open the project in your browser
+- Clone this repository
+- Download and install Node.js
+- Run npm install in the root directory of this project to download and install dependencies
+- Run npm run dev, which will open the project in your browser
 
 
 ### Credits
