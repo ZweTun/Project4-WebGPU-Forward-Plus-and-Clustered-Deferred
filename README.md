@@ -6,6 +6,9 @@
 * Tested on: Intel(R) i7-14700HX, 2100 Mhz, RTX 5060 Laptop
 ![WebGPU](img/cover.gif)
 
+
+---
+
 ## Overview  
 This project explores three different implementations of **real-time lighting** in WebGPU.  
 The rendered scene is the **Sponza Atrium** model, illuminated by a large number of **point lights**, with a **GUI** that allows switching between rendering modes.
@@ -13,6 +16,8 @@ The rendered scene is the **Sponza Atrium** model, illuminated by a large number
 - **Naive Shading**  
 - **Forward+ Shading**  
 - **Clustered Deferred Shading**  
+
+---
 
 ### Implementation Summary  
 
@@ -28,7 +33,6 @@ The rendered scene is the **Sponza Atrium** model, illuminated by a large number
      - Accumulate results and output the final color.  
   3. **Final Output:** Display the shaded image.  
 
----
 
 - **Forward+ Shading:**  
   Divides the view frustum into 3D clusters and assigns lights to these clusters based on AABB (Axis-Aligned Bounding Box) intersection tests.  
@@ -47,7 +51,6 @@ The rendered scene is the **Sponza Atrium** model, illuminated by a large number
      - Retrieve that cluster’s light list and compute lighting using only thoes lights.  
   4. **Final Output:** Display the shaded image.  
 
----
 
 - **Clustered Deferred Shading:**  
   Extends the Forward+ approach by splitting lighting from geometry into two passes.  
@@ -75,6 +78,7 @@ To verify correctness during development, I used the fragment shader to visualiz
 - **Albedo Visualization:**  
 ![WebGPU](img/debugAlbedo2.png)
 
+---
 
 ### Comparison  
 
@@ -86,6 +90,8 @@ To verify correctness during development, I used the fragment shader to visualiz
 | **5000** | ![Naive 5000](img/naive5000.gif) | ![Forward 5000](img/forward5000.gif) | ![Deferred 5000](img/deferred5000.gif) |
 
 
+---
+
 ### Performance Analysis  
 ![WebGPU](img/renderPerf.png)
 
@@ -93,7 +99,7 @@ To verify correctness during development, I used the fragment shader to visualiz
 As we can see naive performs okay for small light counts at ~100 lights but scales poorly. Beyond 500 lights, the naive approach becomes bottlenecked by the loop that checks for every light in the scene. It's performance drops sharply as a result. Forward+ Shading provides a better performance boost by limiting light evaluations per cluster, resulting in greater frames than naive. Clustered Deferred Shading however sees the greatest improvement beating out both other implementations for all light numbers. 
 
 
-
+---
 
 ### Credits
 
