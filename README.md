@@ -10,7 +10,7 @@
 ---
 
 ## Overview  
-This project explores three different implementations of **real-time lighting** in WebGPU.  
+This project explores three different implementations of real-time lighting in WebGPU.  
 The rendered scene is the **Sponza Atrium** model, illuminated by a large number of **point lights**, with a **GUI** that allows switching between rendering modes.
 
 - **Naive Shading**  
@@ -100,6 +100,16 @@ As we can see naive performs okay for small light counts at ~100 lights but scal
 
 
 ---
+
+
+### Running the code
+Follow these steps to install and view the project:
+
+Clone this repository
+Download and install Node.js
+Run npm install in the root directory of this project to download and install dependencies
+Run npm run dev, which will open the project in your browser
+
 
 ### Credits
 
