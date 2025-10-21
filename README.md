@@ -110,6 +110,7 @@ Follow these steps to install and view the project:
 - Run npm install in the root directory of this project to download and install dependencies
 - Run npm run dev, which will open the project in your browser
 
+---
 
 ### Credits
 
