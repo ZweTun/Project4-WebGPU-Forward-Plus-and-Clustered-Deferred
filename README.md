@@ -15,24 +15,28 @@ The rendered scene is the **Sponza Atrium** model, illuminated by a large number
 - **Clustered Deferred Shading**  
 
 ### Implementation Summary  
+
 - **Naive Shading:**  
   Uses a straightforward GPU-based approach where each fragment iterates through all lights in the scene to compute illumination.  
-  This brute-force method is easy to implement but becomes prohibitively expensive as the number of lights increases due to its **O(N×L)** complexity (N = fragments, L = lights).
+  This brute-force method becomes expensive as the number of lights increases due to its O(N×L) complexity (N = fragments, L = lights).
 
+  **High-Level Steps:**  
   1. **Vertex Shader:** Transforms geometry into clip space.  
   2. **Fragment Shader:**  
-     - For each pixel, iterate over **every light** in the scene.  
-     - Compute diffuse and specular contributions using the Phong or Blinn-Phong lighting model.  
+     - For each pixel, iterate over every light in the scene.  
+     - Compute light contributions  
      - Accumulate results and output the final color.  
   3. **Final Output:** Display the shaded image.  
 
+---
 
 - **Forward+ Shading:**  
   Divides the view frustum into 3D clusters and assigns lights to these clusters based on AABB (Axis-Aligned Bounding Box) intersection tests.  
-  In the fragment shader, each pixel only considers lights within its cluster. This drastically reduces redundant light calculations by exploiting light attenuation, ignoring lights too far to meaningfully affect shading.
+  In the fragment shader, each pixel only considers lights within its cluster. This reduces insignificant light calculations by exploiting light attenuation. We are ignoring lights too far to meaningfully affect anything.
 
-   1. **Cluster Generation:**  
-     - Subdivide the frustum into clusters (e.g., 16×8×24).  
+  **High-Level Steps:**  
+  1. **Cluster Generation:**  
+     - Subdivide the frustum into clusters
      - Compute the min/max depth per cluster.  
   2. **Light Assignment:**  
      - For each light, test which clusters it overlaps using AABB intersection.  
@@ -40,29 +44,36 @@ The rendered scene is the **Sponza Atrium** model, illuminated by a large number
   3. **Rendering Pass:**  
      - Render geometry normally.  
      - In the fragment shader, determine the fragment’s cluster.  
-     - Retrieve that cluster’s light list and compute lighting using only nearby lights.  
+     - Retrieve that cluster’s light list and compute lighting using only thoes lights.  
   4. **Final Output:** Display the shaded image.  
 
+---
 
 - **Clustered Deferred Shading:**  
-  Extends the Forward+ approach by spliting lighting from geometry so it is now done in 2 passes. This allows for even more effcient lighting with complex scenes and large light counts.
-  1. **G-Buffer Pass:** Stores material and geometric information (positions, normals, albedo) for each fragment.
+  Extends the Forward+ approach by splitting lighting from geometry into two passes.  
+
+  **High-Level Steps:**  
+  1. **G-Buffer Pass:**  
+     - Store material and geometric information (positions, normals, albedo) for each fragment.  
   2. **Light Clustering:**  
-     - Perform the same light assignment to 3D clusters as in Forward+.  
-  4. **Lighting Pass:**  
-     - For each screen pixel, determine its cluster and retrieve relevant lights.  
-     - Compute lighting entirely in screen space using G-buffer data (no additional geometry traversal).
-  5. **Final Output:** Display the shaded image.
- 
+     - Perform same 3D cluster assignment as in Forward+.  
+  3. **Lighting Pass:**  
+     - For each screen pixel, determine cluster and retrieve lights.  
+     - Compute lighting  using G-buffer data 
+  4. **Final Output:** Display the shaded image.  
+
  ### Debugging via Fragment Shader Visualization  
 
 To verify correctness during development, I used the fragment shader to visualize G-buffer outputs. By returning different texture samples from the shader, I could confirm that data written (such as world positions, normals, and albedo) aligned correctly.
 
 - **World Position Visualization:**  
+![WebGPU](img/debugWorld.png)
 
 - **Normal Visualization:**  
+![WebGPU](img/debugNormals.png)
 
 - **Albedo Visualization:**  
+![WebGPU](img/debugAlbedo.png)
 
 
 ### Comparison  
