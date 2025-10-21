@@ -4,7 +4,7 @@
 * Zwe Tun
   * LinkedIn: https://www.linkedin.com/in/zwe-tun-6b7191256/
 * Tested on: Intel(R) i7-14700HX, 2100 Mhz, RTX 5060 Laptop
-![WebGPU](img/cover3.gif)
+![WebGPU](img/cover4.gif)
 
 
 ---
@@ -96,7 +96,7 @@ To verify correctness during development, I used the fragment shader to visualiz
 ![WebGPU](img/renderPerf.png)
 
 
-As we can see naive performs okay for small light counts at ~100 lights but scales poorly. Beyond 500 lights, the naive approach becomes bottlenecked by the loop that checks for every light in the scene. It's performance drops sharply as a result. Forward+ Shading provides a better performance boost by limiting light evaluations per cluster, resulting in greater frames than naive. Clustered Deferred Shading however sees the greatest improvement beating out both other implementations for all light numbers. 
+As we can see naive performs okay for small light counts at ~100 lights but scales poorly. Beyond 500 lights, the naive approach becomes bottlenecked by the loop that checks for every light in the scene. It's performance drops sharply as a result. Forward+ Shading provides a better performance boost by limiting light evaluations per cluster, resulting in greater frames than naive. Clustered Deferred Shading however sees the greatest improvement beating out both other implementations for all light numbers. The separation of geometry and lighting into two stages makes the differnce very apparant at 3000 lights we notice 28 FPS for Cluster Deferred, 11 FPS for Forward+ and only 1 FPS for naive. Lighting now scales with screen resolution rather than scene complexity. By avoiding redundant shading and vertex processing, Clustered Deferred remains the most efficient even with thousands of lights.
 
 
 ---
