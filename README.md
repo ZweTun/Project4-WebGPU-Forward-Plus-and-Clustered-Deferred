@@ -29,7 +29,7 @@ The rendered scene is the **Sponza Atrium** model, illuminated by a large number
   1. **Vertex Shader:** Transforms geometry into clip space.  
   2. **Fragment Shader:**  
      - For each pixel, iterate over every light in the scene.  
-     - Compute light contributions  
+     - Compute light contributions.
      - Accumulate results and output the final color.  
   3. **Final Output:** Display the shaded image.  
 
@@ -40,7 +40,7 @@ The rendered scene is the **Sponza Atrium** model, illuminated by a large number
 
   **High-Level Steps:**  
   1. **Cluster Generation:**  
-     - Subdivide the frustum into clusters
+     - Subdivide the frustum into clusters.
      - Compute the min/max depth per cluster.  
   2. **Light Assignment:**  
      - For each light, test which clusters it overlaps using AABB intersection.  
@@ -62,7 +62,7 @@ The rendered scene is the **Sponza Atrium** model, illuminated by a large number
      - Perform same 3D cluster assignment as in Forward+.  
   3. **Lighting Pass:**  
      - For each screen pixel, determine cluster and retrieve lights.  
-     - Compute lighting  using G-buffer data 
+     - Compute lighting using G-buffer data.
   4. **Final Output:** Display the shaded image.  
 
  ### Debugging via Fragment Shader Visualization  
