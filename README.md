@@ -35,8 +35,7 @@ The rendered scene is the **Sponza Atrium** model, illuminated by a large number
 
 
 - **Forward+ Shading:**  
-  Divides the view frustum into 3D clusters and assigns lights to these clusters based on AABB (Axis-Aligned Bounding Box) intersection tests.  
-  In the fragment shader, each pixel only considers lights within its cluster. This reduces insignificant light calculations by exploiting light attenuation. We are ignoring lights too far to meaningfully affect anything.
+  Divides the view frustum into 3D clusters and assigns lights to these clusters based on AABB (Axis-Aligned Bounding Box) intersection tests. In the fragment shader, each pixel only considers lights within its cluster. This reduces insignificant light calculations by exploiting light attenuation. We are ignoring lights too far to meaningfully affect anything.
 
   **High-Level Steps:**  
   1. **Cluster Generation:**  
