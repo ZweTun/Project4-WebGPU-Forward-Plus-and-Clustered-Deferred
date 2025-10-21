@@ -67,13 +67,13 @@ The rendered scene is the **Sponza Atrium** model, illuminated by a large number
 To verify correctness during development, I used the fragment shader to visualize G-buffer outputs. By returning different texture samples from the shader, I could confirm that data written (such as world positions, normals, and albedo) aligned correctly.
 
 - **World Position Visualization:**  
-![WebGPU](img/debugWorld.png)
+![WebGPU](img/debugWorld2.png)
 
 - **Normal Visualization:**  
 ![WebGPU](img/debugNormals.png)
 
 - **Albedo Visualization:**  
-![WebGPU](img/debugAlbedo.png)
+![WebGPU](img/debugAlbedo2.png)
 
 
 ### Comparison  
@@ -102,5 +102,5 @@ As we can see naive performs okay for small light counts at ~100 lights but scal
 - [dat.GUI](https://github.com/dataarts/dat.gui)
 - [stats.js](https://github.com/mrdoob/stats.js)
 - [wgpu-matrix](https://github.com/greggman/wgpu-matrix)
-- [CIS 5650 Project 4 Recitation]([https://vitejs.dev/](https://docs.google.com/presentation/d/11T1bZ957AxEqSZMceZLIluE1KLHWXfCSI5heN5Y8g28/edit?slide=id.p#slide=id.p))
-- [Based on Psuedocode]([https://github.com/greggman/wgpu-matrix](https://www.aortiz.me/2018/12/21/CG.html#part-2))
+- [CIS 5650 Project 4 Recitation](https://docs.google.com/presentation/d/11T1bZ957AxEqSZMceZLIluE1KLHWXfCSI5heN5Y8g28/edit?slide=id.p#slide=id.p)
+- [Based on Blog Psuedocode](https://www.aortiz.me/2018/12/21/CG.html#part-2)
