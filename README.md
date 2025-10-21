@@ -121,3 +121,4 @@ Follow these steps to install and view the project:
 - [wgpu-matrix](https://github.com/greggman/wgpu-matrix)
 - [CIS 5650 Project 4 Recitation](https://docs.google.com/presentation/d/11T1bZ957AxEqSZMceZLIluE1KLHWXfCSI5heN5Y8g28/edit?slide=id.p#slide=id.p)
 - [Based on Blog Psuedocode](https://www.aortiz.me/2018/12/21/CG.html#part-2)
+- [CIS 5650 Slides](https://docs.google.com/presentation/d/1LJVo46C-LQcgaomN_EPBc33yc2ycXruN/edit?slide=id.p1#slide=id.p1)
