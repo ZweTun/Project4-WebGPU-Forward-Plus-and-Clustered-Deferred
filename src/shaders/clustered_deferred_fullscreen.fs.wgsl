@@ -37,12 +37,14 @@ fn main(in: FragmentInput) -> @location(0) vec4f {
     let texCoordFlipped = vec2i(texCoord.x, i32(cameraData.screenDim[1]) - 1 - texCoord.y);
     let worldPos = textureLoad(positionTexture, texCoordFlipped, 0).xyz;         // flipped sampling
     let normal = normalize(textureLoad(normalTexture, texCoordFlipped, 0).xyz);
-    
+
+
     // Get cluster index
     let clusterIdx = getClusterIndexFromFragment(in.fragPos, worldPos);
-
+    
     
     let cluster = &clusterBoundsSet.clusterBounds[clusterIdx];
+
     var totalLightContrib = vec3<f32>(0.0, 0.0, 0.0);
     
     for (var i = 0u; i < (*cluster).numLights; i++) {
